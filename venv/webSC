@@ -13,14 +13,8 @@ def getDataFromWeb():
     players_countainer = soup.find('table', class_='table table-striped table-players')
     table_body = players_countainer.find('tbody')
     table_row = table_body.find_all('tr')
-    print(table_row.pprint())
+    print(table_row)
 
 
 
-
-
-if __name__ == "__main__":
-    getDataFromWeb()
-
-
-
+getDataFromWeb()
