@@ -15,6 +15,6 @@ def getDataFromWeb():
     table_row = table_body.find_all('tr')
     print(table_row)
 
-
+    print()
 
 getDataFromWeb()
