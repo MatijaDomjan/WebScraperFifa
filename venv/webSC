@@ -1,20 +1,39 @@
 from bs4 import BeautifulSoup
 import requests
 import pprint
+import pandas as pd
 
+def getPlayerList():
+    url_player_list = []
 
-
-def getDataFromWeb():
     html_doc = requests.get('https://www.fifaindex.com/players/')
     soup = BeautifulSoup(html_doc.text, 'html.parser')
 
-    url_player_list = []
-
     players_countainer = soup.find('table', class_='table table-striped table-players')
     table_body = players_countainer.find('tbody')
-    table_row = table_body.find_all('tr')
-    print(table_row)
+    table_data = table_body.find_all('td', attrs={"data-title":"Name"})
+    for player in table_data:
+        url_link = player.find_all('a', class_='link-player')
+        for url in url_link:
+            link = url.get('href')
+        url_player_list.append(link)
+    return(url_player_list)
 
-    print()
 
-getDataFromWeb()
+def getPlayerData():
+    playerList = getPlayerList()
+    for player in playerList:
+        html_player = requests.get('https://www.fifaindex.com/'+ str(player))
+        soup = BeautifulSoup(html_player.text, 'html.parser')
+
+        player_ball_skill = soup.find_all('div', class_='card-body')
+        for player in player_ball_skill:
+            containers = player.find_all('span',class_='badge badge-dark rating r1')
+            for container in containers:
+                print(container.text)
+
+
+
+
+
+getPlayerData()
